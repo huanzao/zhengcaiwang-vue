@@ -257,7 +257,6 @@ export default {
                   data: param
               }).then((res)=>{
                       loading.close()
-                      
                       if(res.data.success==1){
                           this.dialogFormVisible=false
                           this.$message({
