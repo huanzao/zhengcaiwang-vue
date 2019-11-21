@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>警告框</h1>
+        <h1>警告框hahha zhaohaunhaun</h1>
         <el-button type="primary" @click="openCenter">主要按钮</el-button>
         <el-button type="success">成功按钮</el-button>
         <hr>
