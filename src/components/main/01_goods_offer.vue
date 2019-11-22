@@ -9,7 +9,7 @@
                 <el-tooltip class="item" effect="dark" content="搜索" placement="top-end">
                     <el-button type="primary" icon="el-icon-search" size="mini"  @click="searchDialog=true" style="display:inline-block;float:right;margin-right:10px"></el-button>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="刷新复位" placement="top-end">
+                <el-tooltip class="item" effect="dark" content="刷新复位" placement="top-end" v-if='ISfen'>
                     <el-button type="info" icon="el-icon-refresh" size="mini"  @click="myReload" style="display:inline-block;float:right;"></el-button>
                 </el-tooltip>
 
@@ -178,7 +178,6 @@ import { log } from 'util'
         this.MYsearch()
       },
       MYsearch(){
-          
           let postData = this.$qs.stringify({
               'pageSize':this.pageSize,
               'currentPage':this.currentPage,
@@ -188,19 +187,18 @@ import { log } from 'util'
               'lbmc':this.searchForm.lbmc,
               'time':this.searchForm.time[0]+'-'+this.searchForm.time[1],
               'zt'  :this.searchForm.zt
-          });
-          
+          })
           console.log(postData)
           this.axios.post('api/mess_search',postData).then((res)=>{
               if(res.data.result.length==0){
                   this.$message.error('没有查询到任何数据');
+                  this.ISfen=true
               }else{
                   this.searchDialog=false
                   this.$message.success('查询的数据已成功返回');
                   this.tableData=res.data.result
                   this.totalPage=res.data.total_page
               }
-              
           }).catch((err)=>{
               this.$notify.error({
                 title: '错误',
@@ -297,8 +295,6 @@ import { log } from 'util'
                 message: '放弃撤销'
               });          
             });
-       
-             
       },
       handleDelete(index, row) { //删除
         console.log(index, row);
@@ -358,16 +354,12 @@ import { log } from 'util'
               message: '政府网站崩溃，请稍后再试'
               })
           })
-
-
           }).catch(() => {
             this.$message({
               type: 'info',
               message: '取消输入'
             });       
           });
-      
-        
       },
       handleUp(index, row){ //上架
           const loading = this.$loading({
@@ -403,7 +395,6 @@ import { log } from 'util'
               })
           }) 
       },
-     
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
@@ -428,14 +419,12 @@ import { log } from 'util'
       handleCurrentChange(val) {
          this.currentPage=val
          console.log(this.pagesize,this.currentPage)
-         
          if(this.ISfen==false){
               this.paging()
          }else{
               this.MYsearch()
          }
       }
-      
     }
   }
 </script>
